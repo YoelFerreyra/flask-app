@@ -1,0 +1,13 @@
+{% extends './layout.html' %} 
+{% block title %} {{ data.title}} {% endblock %}
+{% block body %}
+<h1>{{data.title}}</h1>
+{% if data.number_courses > 0 %}
+<ul>
+  {% for c in data.courses %}
+  <li>{{ c }}</li>
+  {% endfor %}
+</ul>
+{% else %}
+<h2>Not data</h2>
+{% endif %} {% endblock %}
