@@ -1,5 +1,8 @@
 {
     "cSpell.words": [
-        "Opsss"
+        "dotenv",
+        "mysqldb",
+        "Opsss",
+        "psycopg"
     ]
 }
