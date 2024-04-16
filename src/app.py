@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
-from psycopg2 import connect
+from psycopg2 import connect, extras
 from dotenv import load_dotenv
 from os import environ
 
@@ -22,22 +22,21 @@ def getConnection():
 
 @app.get('/api/users')
 def get_users():
-    print('paso por aqui')
     conn = getConnection()
-    cursor = conn.cursor()
+    cursor = conn.cursor(cursor_factory=extras.RealDictCursor)
 
     cursor.execute('SELECT * FROM users')
     users = cursor.fetchall()
 
     cursor.close()
     conn.close()
-    return users
+    return jsonify(users)
 
 
 @app.get('/api/users/<int:id>')
 def get_user(id):
     conn = getConnection()
-    cursor = conn.cursor()
+    cursor = conn.cursor(cursor_factory=extras.RealDictCursor)
 
     cursor.execute('SELECT * FROM users WHERE id = %s', (id,))
     user = cursor.fetchone()
