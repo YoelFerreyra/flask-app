@@ -14,7 +14,32 @@
   <body class="bg-dark text-white">
     <div class="container">
       <div class="col-md-4 offset-md-4">
-        <h1>Form</h1>
+        <h1>Flask CRUD</h1>
+        <form id="userform" class="card card-body text-white" style="background-color: #202020;">
+            <label for="username">User name</label>
+            <input type="text"
+            name="username"
+            placeholder="User name"
+            class="form-control mb-2"
+            required
+            />
+            <label for="email">Email</label>
+            <input type="text"
+            name="email"
+            placeholder="Email"
+            class="form-control mb-2"
+            required
+            />
+            <label for="password">White s password</label>
+            <input type="password"
+            name="password"
+            placeholder="Password"
+            class="form-control mb-2"
+            required
+            />
+            <button class="btn btn-primary">Save</button>
+        </form>
+        <ul id="user-list"></ul>
       </div>
     </div>
 
