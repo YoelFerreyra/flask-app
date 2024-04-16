@@ -22,7 +22,16 @@ def getConnection():
 
 @app.get('/api/users')
 def get_users():
-    return 'getting users'
+    print('paso por aqui')
+    conn = getConnection()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT * FROM users')
+    users = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    return users
 
 
 @app.get('/api/users/<int:id>')
