@@ -62,22 +62,34 @@ def create_user():
 
     cursor.execute('INSERT INTO users (username, email, password) VALUES (%s, %s, %s)',
                    (username, email, password))
-    
+
     conn.commit()
     cursor.close()
     conn.close()
     return 'creating users'
 
 
-@app.delete('/api/users/:id')
-def delete_user():
-    return 'deleting users'
+@app.delete('/api/users/<id>')
+def delete_user(id):
+    conn = getConnection()
+    cursor = conn.cursor(cursor_factory=extras.RealDictCursor)
+
+    cursor.execute('DELETE FROM users WHERE id = %s RETURNING *', (id))
+    user = cursor.fetchone()
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    if user is None:
+        return jsonify({'message': 'User not found'}), 404
+    return jsonify(user)
 
 
 @app.put('/api/users/:id')
 def update_users():
     return 'updating users'
-
 
 
 if __name__ == '__main__':
