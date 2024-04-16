@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, send_file
 from psycopg2 import connect, extras
 from dotenv import load_dotenv
 from os import environ
@@ -91,6 +91,9 @@ def delete_user(id):
 def update_users():
     return 'updating users'
 
+@app.get('/')
+def home():
+    return send_file('static/index.html')
 
 if __name__ == '__main__':
     app.run(debug=True, port=3000)
