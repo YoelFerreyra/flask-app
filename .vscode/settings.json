@@ -3,6 +3,7 @@
         "dotenv",
         "mysqldb",
         "Opsss",
-        "psycopg"
+        "psycopg",
+        "userform"
     ]
 }
