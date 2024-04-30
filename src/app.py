@@ -9,13 +9,11 @@ app = Flask(__name__)
 
 external_database_url  = environ.get('EXTERNAL_DATABASE_URL')
 
-
 def getConnection():
-    conn = connect(external_database_url )
+    conn = connect(external_database_url)
     return conn
 
-
-@app.get('/api/users')
+@app.route('/api/users', methods=['GET'])
 def get_users():
     conn = getConnection()
     cursor = conn.cursor(cursor_factory=extras.RealDictCursor)
@@ -27,8 +25,7 @@ def get_users():
     conn.close()
     return jsonify(users)
 
-
-@app.get('/api/users/<int:id>')
+@app.route('/api/users/<int:id>', methods=['GET'])
 def get_user(id):
     conn = getConnection()
     cursor = conn.cursor(cursor_factory=extras.RealDictCursor)
@@ -44,8 +41,7 @@ def get_user(id):
         return jsonify({'message': 'User not found'}), 404
     return jsonify(user)
 
-
-@app.post('/api/users')
+@app.route('/api/users', methods=['POST'])
 def create_user():
     new_user = request.get_json()
     username = new_user['username']
@@ -64,15 +60,14 @@ def create_user():
     conn.commit()
     cursor.close()
     conn.close()
-    return user
+    return jsonify(user)
 
-
-@app.delete('/api/users/<id>')
+@app.route('/api/users/<id>', methods=['DELETE'])
 def delete_user(id):
     conn = getConnection()
     cursor = conn.cursor(cursor_factory=extras.RealDictCursor)
 
-    cursor.execute('DELETE FROM users WHERE id = %s RETURNING *', (id))
+    cursor.execute('DELETE FROM users WHERE id = %s RETURNING *', (id,))
     user = cursor.fetchone()
 
     conn.commit()
@@ -84,14 +79,13 @@ def delete_user(id):
         return jsonify({'message': 'User not found'}), 404
     return jsonify(user)
 
+@app.route('/api/users/<id>', methods=['PUT'])
+def update_user(id):
+    return 'updating user'
 
-@app.put('/api/users/:id')
-def update_users():
-    return 'updating users'
-
-@app.get('/')
+@app.route('/')
 def home():
     return send_file('static/index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True, port=3000)
+    app.run(debug=True, host='0.0.0.0', port=int(environ.get('PORT', 3000)))
